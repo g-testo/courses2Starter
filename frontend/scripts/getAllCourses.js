@@ -1,19 +1,23 @@
 // Create a container for putting our courses
-// Fetch all courses and show them on the page
+// Fetch all courses and show them on the page "http://localhost:8081/api/courses"
 
 window.onload = () => {
     fetch("http://localhost:8081/api/courses")
-        .then((res)=>res.json())
-        .then((courses)=>{
+        .then((res) => res.json())
+        .then((courses) => {
             let coursesContainerEl = document.getElementById("courses-container");
 
-            courses.forEach((course)=>{
+            courses.forEach((course) => {
+                // Created a div element for storing basic course details
                 let courseCard = document.createElement("div");
+                // Added a class called "card" for styling
                 courseCard.classList.add("card");
                 // <div class="card"></div>
 
+                // Interpolate each course card from our fetch request
                 courseCard.innerHTML = `
-                    <p>${course.courseName}</p>
+                    <p>${course.courseName} is starting: ${course.startDate}</p>
+                    <a href="/getOneCourse.html?id=${course.id}">More Details</a>
                 `;
                 // <div class="card">HTML5 and CSS3</div>
 
@@ -22,6 +26,6 @@ window.onload = () => {
                 //      ...
                 //      <div class="card">HTML5 and CSS3</div>
                 // </div>
-            })
-        })
+            });
+        });
 };
