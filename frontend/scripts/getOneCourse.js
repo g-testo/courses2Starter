@@ -25,8 +25,6 @@ window.onload = () => {
         })
     }
 
-
-
     fetch(`http://localhost:8081/api/courses/${currentCourseId}`)
         .then((res)=>res.json())
         .then((courseDetails)=>{
