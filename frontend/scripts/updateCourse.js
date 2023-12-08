@@ -17,12 +17,12 @@ window.onload = () => {
 
     // Get the current course ID from query param
     let urlParams = new URLSearchParams(location.search);
-    let currentCourseId = urlParams.get('id');
+    let currentCourseId = urlParams.get("id");
 
     // Fetch to get current course details
     fetch(`http://localhost:8081/api/courses/${currentCourseId}`)
-        .then((res)=>res.json())
-        .then((courseDetails)=>{
+        .then((res) => res.json())
+        .then((courseDetails) => {
             // Set the form values to the retrieved current course (Prepopulate our form)
             deptInputEl.value = courseDetails.dept;
             courseNumInputEl.value = courseDetails.courseNum;
@@ -30,15 +30,35 @@ window.onload = () => {
             instructorInputEl.value = courseDetails.instructor;
             startDateInputEl.value = courseDetails.startDate;
             numDaysInputEl.value = courseDetails.numDays;
-        })
+        });
 
     updateForm.onsubmit = (event) => {
         // Prevent a page refresh that naturally
         event.preventDefault();
+        // Creating the data to update from the current value of our form fields
+        let currentFormData = {
+            dept: deptInputEl.value,
+            courseNum: courseNumInputEl.value,
+            courseName: courseNameInputEl.value,
+            instructor: instructorInputEl.value,
+            startDate: startDateInputEl.value,
+            numDays: numDaysInputEl.value,
+        };
 
-
-
-        // HW: Get all of the field values and console log them
-        console.log("Update submitted");
+        // Send the data to the API using Fetch
+        fetch(`http://localhost:8081/api/courses/${currentCourseId}`, {
+            method: "PUT",
+            headers:{
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(currentFormData),
+        })
+            .then(() => {
+                console.log("Course updated successfully");
+                location.href = `/getOneCourse.html?id=${currentCourseId}`;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 };
