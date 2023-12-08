@@ -7,10 +7,36 @@
 
 window.onload = () => {
     let updateForm = document.getElementById("update-form");
+    // Get all fields from form
+    let deptInputEl = document.getElementById("dept");
+    let courseNumInputEl = document.getElementById("courseNum");
+    let courseNameInputEl = document.getElementById("courseName");
+    let instructorInputEl = document.getElementById("instructor");
+    let startDateInputEl = document.getElementById("startDate");
+    let numDaysInputEl = document.getElementById("numDays");
+
+    // Get the current course ID from query param
+    let urlParams = new URLSearchParams(location.search);
+    let currentCourseId = urlParams.get('id');
+
+    // Fetch to get current course details
+    fetch(`http://localhost:8081/api/courses/${currentCourseId}`)
+        .then((res)=>res.json())
+        .then((courseDetails)=>{
+            // Set the form values to the retrieved current course (Prepopulate our form)
+            deptInputEl.value = courseDetails.dept;
+            courseNumInputEl.value = courseDetails.courseNum;
+            courseNameInputEl.value = courseDetails.courseName;
+            instructorInputEl.value = courseDetails.instructor;
+            startDateInputEl.value = courseDetails.startDate;
+            numDaysInputEl.value = courseDetails.numDays;
+        })
 
     updateForm.onsubmit = (event) => {
         // Prevent a page refresh that naturally
         event.preventDefault();
+
+
 
         // HW: Get all of the field values and console log them
         console.log("Update submitted");
